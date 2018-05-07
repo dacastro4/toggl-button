@@ -32,19 +32,18 @@ togglbutton.render('#ghx-detail-view [spacing] h1:not(.toggl)', {observe: true},
 // Jira 2018 sprint modal
 // Using the h1 as selector to make sure that it will only try to render the button
 // after Jira has fully rendered the modal content
-togglbutton.render('div[role="dialog"] .ffQQbf:not(.toggl)', {observe: true}, function (needle) {
-  var root = needle.closest('div[role="dialog"]'),
+togglbutton.render('div[role="dialog"] .sc-bMvGRv:not(.toggl)', {observe: true}, function (needle) {
+  var root = needle,
     id = $('a:first-child', root),
     description = $('h1:first-child', root),
     project = $('.bgdPDV'),
     container = createTag('div', 'jira-ghx-toggl-button'),
     link;
 
-  if (id !== null && description !== null && project !== null) {
+  if (id !== null && description !== null) {
     link = togglbutton.createTimerLink({
       className: 'jira2017',
       description: id.textContent + ' ' + description.textContent,
-      projectName: project && project.textContent
     });
 
     container.appendChild(link);
@@ -146,4 +145,24 @@ togglbutton.render('#title-heading:not(.toggl)', {observe: true}, function (elem
   });
 
   $('#title-text').appendChild(link);
+});
+
+// Jira 2018 sprint board
+togglbutton.render('li[data-column-id="417"] .ghx-wrap-issue .ghx-issue:not(.toggl)', {observe: true}, function (needle) {
+    var root = needle,
+        id = $('.ghx-key', root),
+        description = $('.ghx-summary:first-child', root),
+        container = createTag('div', 'jira-ghx-toggl-button'),
+        link;
+
+    if (id !== null && description !== null) {
+        link = togglbutton.createTimerLink({
+            className: 'jira2017',
+            description: id.textContent + ' ' + description.textContent,
+            buttonType: 'minimal',
+        });
+
+        container.appendChild(link);
+        id.parentNode.appendChild(container);
+    }
 });
